@@ -1,1 +1,0 @@
-SELECT * FROM `group-1-assignment.dbt_rhasan.nyc-collision` LIMIT 1000
