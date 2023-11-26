@@ -1,3 +1,4 @@
+
 SELECT
     ROW_NUMBER() OVER () AS date_ID,
     EXTRACT(YEAR FROM created_date) AS year,
