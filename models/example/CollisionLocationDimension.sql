@@ -1,5 +1,5 @@
 SELECT
-  ROW_NUMBER() OVER() AS location_ID,
+ ROW_NUMBER() OVER(ORDER BY timestamp) AS location_ID,
   borough,
   zip_code,
   latitude,

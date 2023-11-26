@@ -87,3 +87,58 @@ models:
         description: "The minute extracted from the created_date."
         tests:
           - not_null
+  - name: VehicleCollisionsFactTable
+    description: "This fact table records details of vehicle collisions, with references to dimensions of time, date, location, and vehicle type."
+    columns:
+      - name: collision_id
+        description: "A unique identifier for each collision record, created using the ROW_NUMBER() window function."
+        tests:
+          - unique
+          - not_null
+      - name: collision_timestamp
+        description: "The timestamp when the collision occurred."
+      - name: collision_date_ID
+        description: "Reference to the DateDimension model, linking to the date when the collision occurred."
+        tests:
+          - relationships:
+              to: ref('CollisionDateDimension')
+              field: date_ID
+      - name: collision_location_ID
+        description: "Reference to the LocationDimension model, linking to the location where the collision occurred."
+        tests:
+          - relationships:
+              to: ref('CollisionLocationDimension')
+              field: location_ID
+      - name: collision_time_ID
+        description: "Reference to the TimeDimension model, linking to the time when the collision occurred."
+        tests:
+          - relationships:
+              to: ref('CollisionTimeDimension')
+              field: time_ID
+      - name: collision_vehicleType_ID
+        description: "Reference to the VehicleTypeDimension model, linking to the type of vehicle involved in the collision."
+        tests:
+          - relationships:
+              to: ref('CollisionVehicleTypeDimension')
+              field: vehicleType_ID
+
+  - name: CombinedFactTable
+    description: "This model joins the VehicleCollisionsFactTable and ComplaintFactTable to provide a comprehensive view of collisions and complaints."
+    columns:
+      - name: combined_id
+        description: "A unique identifier for the combined record."
+        tests:
+          - unique
+          - not_null
+      - name: vehicle_collision_id
+        description: "A unique identifier for each collision record, created using the ROW_NUMBER() window function in VehicleCollisionsFactTable."
+        tests:
+          - relationships:
+              to: ref('VehicleCollisionsFactTable')
+              field: collision_id
+      - name: complaint_id
+        description: "A unique identifier for each complaint record, created using the ROW_NUMBER() window function in ComplaintFactTable."
+        tests:
+          - relationships:
+              to: ref('ComplaintFactTable')
+              field: service_request_id

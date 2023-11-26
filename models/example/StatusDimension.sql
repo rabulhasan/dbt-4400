@@ -1,6 +1,5 @@
-SELECT
-    ABS(FARM_FINGERPRINT(CONCAT(status, CAST(ROW_NUMBER() OVER () AS STRING)))) AS status_ID,
-    status
-FROM 
-    `bigquery-public-data.new_york_311.311_service_requests`
-LIMIT 1000
+select row_number() over (order by unique_key) as status_id, 
+status,
+
+from `bigquery-public-data.new_york_311.311_service_requests`
+limit 1000
