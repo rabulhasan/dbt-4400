@@ -1,6 +1,6 @@
 
 SELECT
-  ROW_NUMBER() OVER(ORDER BY unique_key) AS date_ID,
+  ROW_NUMBER() OVER(ORDER BY created_date) AS date_ID,
   EXTRACT(YEAR FROM created_date) AS year,
   EXTRACT(MONTH FROM created_date) AS month,
   EXTRACT(DAY FROM created_date) AS day,
