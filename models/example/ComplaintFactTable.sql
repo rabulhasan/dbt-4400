@@ -5,7 +5,7 @@ with service_requests as (
         ROW_NUMBER() OVER (ORDER BY created_date) as service_request_id  -- This is an example of how might create a consistent key
     from `bigquery-public-data.new_york_311.311_service_requests`
     WHERE EXTRACT(YEAR FROM created_date) BETWEEN 2017 AND 2020
-    limit 1000
+    
 ),
 
 date_dimension as (
