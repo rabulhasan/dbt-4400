@@ -1,5 +1,5 @@
 SELECT
-    ROW_NUMBER() OVER(ORDER BY unique_key) AS time_ID,
+    ROW_NUMBER() OVER(ORDER BY created_date) AS time_ID,
     EXTRACT(HOUR FROM created_date) AS hour,
     EXTRACT(MINUTE FROM created_date) AS minute
 FROM 
