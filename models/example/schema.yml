@@ -122,23 +122,4 @@ models:
               to: ref('CollisionVehicleTypeDimension')
               field: vehicleType_ID
 
-  - name: CombinedFactTable
-    description: "This model joins the VehicleCollisionsFactTable and ComplaintFactTable to provide a comprehensive view of collisions and complaints."
-    columns:
-      - name: combined_id
-        description: "A unique identifier for the combined record."
-        tests:
-          - unique
-          - not_null
-      - name: vehicle_collision_id
-        description: "A unique identifier for each collision record, created using the ROW_NUMBER() window function in VehicleCollisionsFactTable."
-        tests:
-          - relationships:
-              to: ref('VehicleCollisionsFactTable')
-              field: collision_id
-      - name: complaint_id
-        description: "A unique identifier for each complaint record, created using the ROW_NUMBER() window function in ComplaintFactTable."
-        tests:
-          - relationships:
-              to: ref('ComplaintFactTable')
-              field: service_request_id
+  
