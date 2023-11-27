@@ -5,7 +5,7 @@ with
         select *, row_number() over (order by timestamp) as collision_id
         from `bigquery-public-data.new_york_mv_collisions.nypd_mv_collisions`
         WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020
-        limit 1000
+        
     ),
 
     collision_date_dimension as (select * from {{ ref("CollisionDateDimension") }}),
