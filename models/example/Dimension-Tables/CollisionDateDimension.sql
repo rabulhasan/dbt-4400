@@ -6,7 +6,7 @@ SELECT
   FORMAT_DATE('%B', timestamp) AS month_name,
   FORMAT_DATE('%A', timestamp) AS day_name,
   timestamp AS full_date
-FROM `bigquery-public-data.new_york_mv_collisions.nypd_mv_collisions`
+FROM {{ref('CollisionStaging')}}
 WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020
 
 

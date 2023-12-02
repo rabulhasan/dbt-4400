@@ -3,7 +3,7 @@ SELECT
     EXTRACT(HOUR FROM created_date) AS hour,
     EXTRACT(MINUTE FROM created_date) AS minute
 FROM 
-    `bigquery-public-data.new_york_311.311_service_requests`
+    {{ ref("311_Compliant_staging")}}
    WHERE EXTRACT(YEAR FROM created_date) BETWEEN 2017 AND 2020
 
 
