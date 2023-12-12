@@ -1,10 +1,18 @@
-
+with Col_Loc_Dim AS (
 
 SELECT
- ROW_NUMBER() OVER(ORDER BY timestamp) AS location_ID,
-  borough,
-  zip_code,
-  latitude,
-  longitude
+  Distinct
+  borough AS borough,
+  zip_code AS zip_code,
+  latitude AS latitude,
+  longitude AS longitude
+
 FROM {{ ref('CollisionStaging') }}
 WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020
+
+)
+Select 
+row_number() over () as location_id,
+* 
+From 
+Col_Loc_Dim

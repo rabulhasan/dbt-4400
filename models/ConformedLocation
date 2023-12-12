@@ -1,0 +1,23 @@
+with LocationDimension as (
+    select
+        *
+        FROM {{ ref('LocationDimension') }}
+    
+),
+
+CollisionLocationDimension as (
+    select * from {{ ref('CollisionLocationDimension') }}
+),
+
+conformed_dim as (
+    
+    SELECT 
+      borough AS borough,
+  zip_code AS zip_code,  
+  latitude AS latitude,
+  longitude AS longitude
+
+  from LocationDimension
+  Full join CollisionLocationDimension
+  on LocationDimension.borough = CollisionLocationDimension.borough
+)

@@ -1,43 +1,35 @@
-
 -- models/CollisionFactTable.sql
 with
-    collision_data as (
-        select *, row_number() over (order by timestamp) as collision_id
-        from `bigquery-public-data.new_york_mv_collisions.nypd_mv_collisions`
-        WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020
-        
-    ),
+    collision_data as (select * from {{ ref('CollisionStaging') }}),
 
-    collision_date_dimension as (select * from {{ ref("CollisionDateDimension") }}),
+    collision_date_dimension as (select * from {{ ref('conform_date') }}),
 
     collision_location_dimension as (
-        select * from {{ ref("CollisionLocationDimension") }}
+        select * from {{ ref('CollisionLocationDimension') }}
     ),
 
-    collision_time_dimension as (select * from {{ ref("CollisionTimeDimension") }}),
-
+    -- collision_time_dimension as (select * from {{ ref("CollisionTimeDimension") }}),
     collision_vehicle_dimension as (
-        select * from {{ ref("CollisionVehicleTypeDimension") }}
-    ),
-
-    collision_incidents_dimension as (
-        select * from {{ ref("CollisionIncident") }}
+        select * from {{ ref('CollisionVehicleTypeDimension') }}
     )
 
 select
-    cd.collision_id,
-    ci.incident_id,
-    ci.Death,
-    ci.Injured,
-    cd.timestamp as collision_timestamp,
-    cdd.date_id as collision_date_id,
-    cld.location_id as collision_location_id,
-    ctd.time_id as collision_time_id,
-    cvd.vehicletype_id as collision_vehicletype_id
+    cd.unique_key,
+    cd.number_of_pedestrians_killed,
+    cd.number_of_persons_injured,
+    cd.number_of_persons_killed,
+    cdd.date_dim_id,
+    cld.location_id,
+    -- ctd.time_id as collision_time_id,
+    cvd.vehicletype_id
 
 from collision_data cd
-left join collision_date_dimension cdd on cdd.date_id = cd.collision_id -- Adjust as needed
-left join collision_location_dimension cld on cld.location_id = cd.collision_id -- Adjust as needed
-left join collision_time_dimension ctd on ctd.time_id = cd.collision_id -- Adjust as needed
-left join collision_vehicle_dimension cvd on cvd.vehicletype_id = cd.collision_id -- Adjust as needed
-left join collision_incidents_dimension ci on ci.timestamp = cd.timestamp -- This assumes that timestamp can be used to join
+left join collision_date_dimension cdd on  cd.timestamp = cdd.full_date  -- Adjust as needed
+left join collision_location_dimension cld on cld.latitude = cd.latitude
+    and cld.longitude = cd.longitude  -- Adjust as needed
+-- left join collision_time_dimension ctd on ctd.time_id = cd.collision_id -- Adjust
+-- as needed
+left join collision_vehicle_dimension cvd on cd.vehicle_type_code1 = cvd.vehicle_type -- Adjust as needed
+    -- left join collision_incidents_dimension ci on ci.timestamp = cd.timestamp --
+    -- This assumes that timestamp can be used to join
+    

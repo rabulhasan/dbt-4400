@@ -1,9 +1,8 @@
-SELECT
-    ROW_NUMBER() OVER(ORDER BY created_date) AS time_ID,
-    EXTRACT(HOUR FROM created_date) AS hour,
-    EXTRACT(MINUTE FROM created_date) AS minute
-FROM 
-    {{ ref("311_Compliant_staging")}}
-   WHERE EXTRACT(YEAR FROM created_date) BETWEEN 2017 AND 2020
+select
 
+    unique_key
+    
+from `bigquery-public-data.new_york_311.311_service_requests`
+
+where longitude is not null and latitude is not null  and EXTRACT(YEAR FROM created_date) BETWEEN 2017 AND 2020
 

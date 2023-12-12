@@ -1,4 +1,6 @@
+with Col_date as (
 SELECT
+Distinct
   ROW_NUMBER() OVER(ORDER BY timestamp) AS date_ID, -- Now ordered by timestamp
   EXTRACT(YEAR FROM timestamp) AS year,
   EXTRACT(MONTH FROM timestamp) AS month,
@@ -8,5 +10,9 @@ SELECT
   timestamp AS full_date
 FROM {{ref('CollisionStaging')}}
 WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020
-
+)
+Select
+*
+From
+Col_date
 
