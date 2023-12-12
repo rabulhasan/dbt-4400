@@ -1,5 +1,6 @@
-
+with Complaint_date As (
 SELECT
+Distinct
   ROW_NUMBER() OVER(ORDER BY created_date) AS date_ID,
   EXTRACT(YEAR FROM created_date) AS year,
   EXTRACT(MONTH FROM created_date) AS month,
@@ -10,6 +11,10 @@ SELECT
 FROM 
  {{ref("311_Compliant_staging")}}
   WHERE EXTRACT(YEAR FROM created_date) BETWEEN 2017 AND 2020
+)
+Select 
+*
+FROM Complaint_date
 
 
 

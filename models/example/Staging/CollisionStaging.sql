@@ -1,8 +1,7 @@
 select
-    row_number() over (order by timestamp) as collision_staging_id,
     borough,
-    timestamp,
-    latitude,
+    cast(timestamp as date) as timestamp,
+    latitude ,
     longitude,
     location,
     number_of_pedestrians_killed,
@@ -12,3 +11,4 @@ select
     vehicle_type_code1,
     zip_code
 from `bigquery-public-data.new_york_mv_collisions.nypd_mv_collisions`
+WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020 and latitude is not null and longitude is not null 

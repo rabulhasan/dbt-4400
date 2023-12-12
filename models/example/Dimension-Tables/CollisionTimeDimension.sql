@@ -1,6 +1,7 @@
-SELECT
-  ROW_NUMBER() OVER(ORDER BY timestamp) AS time_ID,
-  EXTRACT(HOUR FROM timestamp) AS hour,
-  EXTRACT(MINUTE FROM timestamp) AS minute,
-FROM {{ ref('CollisionStaging')}}
-WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020
+select
+    borough
+ 
+from `bigquery-public-data.new_york_mv_collisions.nypd_mv_collisions`
+WHERE EXTRACT(YEAR FROM timestamp) BETWEEN 2017 AND 2020 and latitude is not null and longitude is not null 
+
+
